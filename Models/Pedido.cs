@@ -6,55 +6,45 @@ namespace EspacioPedido
     {
         // Atributos
         int numero;
-        string? observacion;
-        Cliente? cliente;
+        string observacion;
         Estado estado;
+        Cliente cliente;
         Cadete? cadete;
 
         // Propiedades
-        public int Numero { get => numero; set => numero = value; }
-        public string? Observacion { get => observacion; set => observacion = value; }
-        public Cliente? Cliente { get => cliente; }   
-        internal Estado Estado { get => estado; set => estado = value; }
-        public Cadete? Cadete { get => cadete; set => cadete = value; }
 
         // Constructores
-        public Pedido(int numero, string observacion, Estado estado, Cadete? cadete , string nombre, string direccion, int telefono, string datosReferenciaDireccion)
+        public Pedido(int numPedido, string obsPedido, Estado estPedido, string nomCliente, string direcCliente, string telCliente, string datosRefCliente)
         {
-            this.numero = numero;
-            this.observacion = observacion;
-            cliente = new(nombre, direccion, telefono, datosReferenciaDireccion);
-            this.estado = estado;
-            this.Cadete = cadete;
-        }
-        public Pedido(){
-
+            numero = numPedido;
+            observacion = obsPedido;
+            estado = estPedido;
+            cliente = new(nomCliente, direcCliente, telCliente, datosRefCliente);
+            this.cadete = null;
         }
 
         // Metodos
-        public string VerDireccionCliente(){
-            if (cliente != null)
-            {
-                return cliente.Direccion + " - " + cliente.DatosReferenciaDireccion;
-            } else
-            {
-                return "Error - Cliente es Null";
-            }
+        public void AgregarCadete(Cadete c)
+        {
+            this.cadete = c;
         }
-        public string VerDatosCliente(){
-            if (cliente != null)
-            {
-                return cliente.Nombre + ", " + cliente.Telefono;
-            } else
-            {
-                return "Error - Cliente es Null";
-            }
+        public void CambiarEstado(Estado estado)
+        {
+            this.estado = estado;
+        }
+        public string VerDireccionCliente()
+        {
+            return cliente.Direccion + " - " + cliente.DatosReferenciaDireccion;
+        }
+        public string VerDatosCliente()
+        {
+            return cliente.Nombre + ", " + cliente.Telefono;
         }
     }
     public enum Estado
     {
-        Pendiente = 0,
-        Entregado = 1,
-        Cancelado = 2,
+        Pendiente,
+        Entregado,
+        Cancelado
     }
 }
