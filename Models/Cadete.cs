@@ -1,4 +1,3 @@
-using EspacioPedido;
 namespace EspacioCadete
 {
     public class Cadete
@@ -10,6 +9,7 @@ namespace EspacioCadete
         string telefono;
 
         // Propiedades
+        public int Id { get => id;}
 
         // Constructores
         public Cadete(int id, string nombre, string direccion, string telefono)

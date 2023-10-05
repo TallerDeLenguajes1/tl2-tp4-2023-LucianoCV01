@@ -12,6 +12,9 @@ namespace EspacioPedido
         Cadete? cadete;
 
         // Propiedades
+        public int Numero { get => numero; }
+        public Estado Estado { get => estado; }
+        public Cadete? Cadete { get => cadete; }
 
         // Constructores
         public Pedido(int numPedido, string obsPedido, Estado estPedido, string nomCliente, string direcCliente, string telCliente, string datosRefCliente)

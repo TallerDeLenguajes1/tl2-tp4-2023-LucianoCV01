@@ -13,19 +13,26 @@ namespace EspacioCadeteria
             }
             return cadeteria;
         }
-        public const int pagoPorPedido = 500;
-        public const int error = -9999;
         // Atributos
-        string? nombre;
+        string nombre;
         string telefono;
-        List<Cadete>? cadetes;
         List<Pedido>? pedidos;
+        List<Cadete>? cadetes;
+
+        private static Cadeteria? instance;
+
+        // public static Cadeteria GetInstance(){
+        //     if(instance == null){
+        //         instance = new Cadeteria();
+        //         Random random
+        //     }
+        // }
 
         // Propiedades
-        public string? Nombre { get => nombre; }
-        public string Telefono { get => telefono; }
-        internal List<Cadete>? Cadetes { get => cadetes; set => cadetes = value; }
-        public List<Pedido>? Pedidos { get => pedidos; set => pedidos = value; }
+        // public string? Nombre { get => nombre; }
+        // public string Telefono { get => telefono; }
+        // internal List<Cadete>? Cadetes { get => cadetes; set => cadetes = value; }
+        // public List<Pedido>? Pedidos { get => pedidos; set => pedidos = value; }
 
         // Constructores
         public Cadeteria(string? nombre, string telefono, List<Cadete>? cadetes)
@@ -69,34 +76,44 @@ namespace EspacioCadeteria
         }
 
         // // Metodos
-        public Pedido DarAltaPedido(int numero, string observacion, Estado estado, Cadete? cadete , string nombre, string direccion, int telefono, string datosReferenciaDireccion){
-            Pedido pedidoNuevo = new(numero,observacion, estado, cadete, nombre, direccion, telefono, datosReferenciaDireccion);
-            return pedidoNuevo;
-        }
-        public int EnviosEntregadosPorCadete(int idCadete){
-            int cantidadEnvios = error;
-            if (pedidos != null)
-            {
-                var pedidosEntregados = pedidos.Where(p => p.Estado == Estado.Entregado);
-                var pedidosCadete = pedidosEntregados.Where(p => p.Cadete.Id == idCadete);
-                cantidadEnvios = pedidosCadete.Count();
-            }
-            return cantidadEnvios;
-        }
-        public float JornalACobrar(int idCadete){
-            float monto = error;
-            if (Cadetes != null)
-            {
-                monto =  pagoPorPedido * EnviosEntregadosPorCadete(idCadete);
-            }
-            return monto;
-        }
-        public Pedido AsignarCadeteAPedido(int idCadete, int idPedido){
-            Cadete? encontrado = Cadetes.FirstOrDefault(c => c.Id == idCadete);
-            Pedido? buscado = Pedidos.FirstOrDefault(p => p.Numero == idPedido);
-            buscado.Cadete = encontrado;
+        private Pedido BuscarPedido(int idPedido){
+            Pedido buscado = pedidos.FirstOrDefault(p => p.Numero == idPedido);
             return buscado;
         }
+        private Cadete BuscarCadete(int idCadete){
+            Cadete buscado = cadetes.FirstOrDefault(c => c.Id == idCadete);
+            return buscado;
+        }
+        public Pedido AsignarCadeteAPedido(int idCadete, int idPedido){
+            Pedido buscado = BuscarPedido(idPedido);
+            buscado.AgregarCadete(BuscarCadete(idCadete));
+            return buscado; 
+        }
+        public Pedido DarAltaPedido(int numPed, string obsPed, Estado estPed, string nomCli, string direcCli, string telCli, string datosRefCli, Cadete cadete){
+            Pedido pedidoNuevo = new(numPed,obsPed, estPed, nomCli, direcCli, telCli, datosRefCli);
+            pedidoNuevo.AgregarCadete(cadete);
+            return pedidoNuevo;
+        }
+        private Pedido CambiarEstadoDePedido(int numPed, Estado nuevoEst){
+            Pedido buscado = BuscarPedido(numPed);
+            buscado.CambiarEstado(nuevoEst);
+            return buscado;
+        }
+        public Pedido ReasignarPedido(int numPedido, int idCadeteNuevo){
+            Pedido buscado = BuscarPedido(numPedido);
+            buscado.AgregarCadete(BuscarCadete(idCadeteNuevo));
+            return buscado;
+        }
+        public int EnviosEntregadosPorCadete(int idCadete){
+            var pedidosEntregados = pedidos.Where(p => p.Estado == Estado.Entregado && p.Cadete.Id == idCadete);
+            int cantEntregas = pedidosEntregados.Count();
+            return cantEntregas;
+        }
+        public float JornalACobrar(int idCadete){
+            float monto = EnviosEntregadosPorCadete(idCadete) * 500;
+            return monto;
+        }
+
 
         public List<Pedido> DevolverPedidos(){
             return pedidos;
@@ -110,27 +127,5 @@ namespace EspacioCadeteria
             return pedido;
         }
 
-        public Pedido CambiarEstadoDePedido(int numPedido, Estado estadoNuevo){
-            Pedido? encontrado = null;
-            if (Pedidos != null)
-            {
-                encontrado = Pedidos.FirstOrDefault(p => p.Numero == numPedido);
-                if (encontrado != null)
-                {                    
-                    encontrado.Estado = estadoNuevo; 
-                }            
-            }
-            return encontrado;
-        }
-        public Pedido ReasignarPedido(int numPedido, int idCadeteNuevo){
-            Pedido? pedidoEncontrado = null;
-            if (Cadetes != null)
-            {
-                pedidoEncontrado = Pedidos.FirstOrDefault(p => p.Numero == numPedido);
-                Cadete? encontradoNuevo = Cadetes.FirstOrDefault(c => c.Id == idCadeteNuevo);
-                pedidoEncontrado.Cadete = encontradoNuevo;
-            }
-            return pedidoEncontrado;
-        }
     }
 }
