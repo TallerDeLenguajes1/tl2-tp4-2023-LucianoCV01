@@ -1,32 +1,32 @@
 [
     {
-        "Numero": 1,
+        "Id": 1,
         "Nombre": "Luis Pérez",
         "Direccion": "Av. San Martín 123",
-        "Telefono": "381-1111111"
+        "Telefono": "3811111111"
     },
     {
-        "Numero": 2,
+        "Id": 2,
         "Nombre": "Ana Rodríguez",
         "Direccion": "Calle 9 de Julio 456",
-        "Telefono": "381-2222222"
+        "Telefono": "3812222222"
     },
     {
-        "Numero": 3,
+        "Id": 3,
         "Nombre": "Carlos González",
         "Direccion": "Av. Belgrano 789",
-        "Telefono": "381-3333333"
+        "Telefono": "3813333333"
     },
     {
-        "Numero": 4,
+        "Id": 4,
         "Nombre": "Sofía López",
         "Direccion": "Calle Sarmiento 321",
-        "Telefono": "381-4444444"
+        "Telefono": "3814444444"
     },
     {
-        "Numero": 5,
+        "Id": 5,
         "Nombre": "Diego Martínez",
         "Direccion": "Calle Mitre 654",
-        "Telefono": "381-5555555"
+        "Telefono": "3815555555"
     }
 ]

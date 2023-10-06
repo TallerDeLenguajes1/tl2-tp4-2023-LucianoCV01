@@ -17,8 +17,13 @@ public class CadeteriaController : ControllerBase{
         cadeteria = Cadeteria.GetCadeteria();
     }
 
+    [HttpGet]
+    public ActionResult<Cadeteria> GetCadeteria(){
+        return Ok(cadeteria);
+    }
     // [Get] GetPedidos() => Retorna una lista de Pedidos
     [HttpGet]
+    [Route("GetPedidos")]
     public ActionResult<List<Pedido>> GetPedidos(){
         var pedidos = cadeteria.DevolverPedidos();
         return Ok(pedidos);

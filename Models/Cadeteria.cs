@@ -24,17 +24,23 @@ namespace EspacioCadeteria
         }
         // Singleton
         private static Cadeteria cadeteria;
+
+
         public static Cadeteria GetCadeteria()
         {
             if (cadeteria == null)
             {
                 AccesoJSON accesoADatos = new();
-                cadeteria = accesoADatos.LeerArchivoCadeteria("../Cadeteria.json", "../Cadetes.json");
+                cadeteria = accesoADatos.LeerArchivoCadeteria("/Users/lucianocosentino/Documents/Repositorios/TallerII/tl2-tp4-2023-LucianoCV01/Cadeteria.json", "/Users/lucianocosentino/Documents/Repositorios/TallerII/tl2-tp4-2023-LucianoCV01/Cadetes.json");
             }
             return cadeteria;
         }
 
         // Propiedades
+        public string? Nombre { get => nombre; set => nombre = value; }
+        public string? Telefono { get => telefono; set => telefono = value; }
+        public List<Pedido>? Pedidos { get => pedidos; set => pedidos = value; }
+        public List<Cadete>? Cadetes { get => cadetes; set => cadetes = value; }
 
 
         // // Metodos
@@ -51,15 +57,15 @@ namespace EspacioCadeteria
         public Pedido AsignarCadeteAPedido(int idCadete, int idPedido)
         {
             Pedido buscado = BuscarPedido(idPedido);
-            buscado.AgregarCadete(BuscarCadete(idCadete));
+            buscado.Cadete = idCadete;
             return buscado;
         }
-        public Pedido DarAltaPedido(int numPed, string obsPed, Estado estPed, string nomCli, string direcCli, string telCli, string datosRefCli, Cadete cadete)
-        {
-            Pedido pedidoNuevo = new(numPed, obsPed, estPed, nomCli, direcCli, telCli, datosRefCli);
-            pedidoNuevo.AgregarCadete(cadete);
-            return pedidoNuevo;
-        }
+        // public Pedido DarAltaPedido(int numPed, string obsPed, Estado estPed, string nomCli, string direcCli, string telCli, string datosRefCli, Cadete cadete)
+        // {
+        //     Pedido pedidoNuevo = new(numPed, obsPed, estPed, nomCli, direcCli, telCli, datosRefCli);
+        //     pedidoNuevo.AgregarCadete(cadete);
+        //     return pedidoNuevo;
+        // }
         public Pedido CambiarEstadoDePedido(int numPed, Estado nuevoEst)
         {
             Pedido buscado = BuscarPedido(numPed);
@@ -69,12 +75,12 @@ namespace EspacioCadeteria
         public Pedido ReasignarPedido(int numPedido, int idCadeteNuevo)
         {
             Pedido buscado = BuscarPedido(numPedido);
-            buscado.AgregarCadete(BuscarCadete(idCadeteNuevo));
+            buscado.Cadete = idCadeteNuevo;
             return buscado;
         }
         public int EnviosEntregadosPorCadete(int idCadete)
         {
-            var pedidosEntregados = pedidos.Where(p => p.Estado == Estado.Entregado && p.Cadete.Id == idCadete);
+            var pedidosEntregados = pedidos.Where(p => p.Estado == Estado.Entregado && p.Cadete == idCadete);
             int cantEntregas = pedidosEntregados.Count();
             return cantEntregas;
         }
@@ -93,8 +99,8 @@ namespace EspacioCadeteria
         }
         public Pedido AgregarPedido(Pedido pedido)
         {
+            pedido.Numero = pedidos.Count();
             pedidos.Add(pedido);
-            pedido.AumentarNumero(pedidos.Count());
             return pedido;
         }
         public Cadete AgregarCadete(Cadete cadete)

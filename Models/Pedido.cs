@@ -9,12 +9,14 @@ namespace EspacioPedido
         string observacion;
         Estado estado;
         Cliente cliente;
-        Cadete? cadete;
+        int cadete;
 
         // Propiedades
-        public int Numero { get => numero; }
-        public Estado Estado { get => estado; }
-        public Cadete? Cadete { get => cadete; }
+        public int Numero { get => numero; set => numero = value;}
+        public string Observacion { get => observacion; set => observacion = value; }
+        public Estado Estado { get => estado; set => estado = value;}
+        public Cliente Cliente { get => cliente; set => cliente = value; }
+        public int Cadete { get => cadete; set => cadete = value; }
 
         // Constructores
         public Pedido(int numPedido, string obsPedido, Estado estPedido, string nomCliente, string direcCliente, string telCliente, string datosRefCliente)
@@ -23,11 +25,13 @@ namespace EspacioPedido
             observacion = obsPedido;
             estado = estPedido;
             cliente = new(nomCliente, direcCliente, telCliente, datosRefCliente);
-            this.cadete = null;
+            this.cadete = -9999;
         }
-
+        public Pedido(){
+            
+        }
         // Metodos
-        public void AgregarCadete(Cadete c)
+        public void AgregarCadete(int c)
         {
             this.cadete = c;
         }
@@ -43,9 +47,9 @@ namespace EspacioPedido
         {
             return cliente.Nombre + ", " + cliente.Telefono;
         }
-        public void AumentarNumero(int num){
-            this.numero = num;
-        }
+        // public void AumentarNumero(int num){
+        //     this.numero = num;
+        // }
     }
     public enum Estado
     {
