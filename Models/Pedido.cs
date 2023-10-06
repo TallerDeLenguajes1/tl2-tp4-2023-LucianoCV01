@@ -43,6 +43,9 @@ namespace EspacioPedido
         {
             return cliente.Nombre + ", " + cliente.Telefono;
         }
+        public void AumentarNumero(int num){
+            this.numero = num;
+        }
     }
     public enum Estado
     {

@@ -21,6 +21,8 @@ namespace EspacioCadete
         }
 
         //Metodos
-
+        public void AumentarNumero(int num){
+            this.id = num;
+        }
     }
 }

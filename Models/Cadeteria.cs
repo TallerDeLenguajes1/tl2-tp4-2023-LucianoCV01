@@ -14,8 +14,8 @@ namespace EspacioCadeteria
             return cadeteria;
         }
         // Atributos
-        string nombre;
-        string telefono;
+        string? nombre;
+        string? telefono;
         List<Pedido>? pedidos;
         List<Cadete>? cadetes;
 
@@ -35,52 +35,56 @@ namespace EspacioCadeteria
         // public List<Pedido>? Pedidos { get => pedidos; set => pedidos = value; }
 
         // Constructores
-        public Cadeteria(string? nombre, string telefono, List<Cadete>? cadetes)
+        public Cadeteria(string nombre, string telefono, List<Cadete> cadetes)
         {
             this.nombre = nombre;
             this.telefono = telefono;
             this.cadetes = cadetes;
+            pedidos = new();
+        }
+        public Cadeteria(){
+
         }
 
-        public Cadeteria()
-        {
-            pedidos = new List<Pedido>();
-            cadetes = new List<Cadete>();
-            nombre = "Cadeteria la prueba";
-            pedidos.Add(new Pedido
-            {
-                Numero = 1,
-                Observacion = " Es el primer pedido"
-            });
-            pedidos.Add(new Pedido
-            {
-                Numero = 2,
-                Observacion = " Es el segundo pedido"
-            });
-            pedidos.Add(new Pedido
-            {
-                Numero = 3,
-                Observacion = " Es el tercer pedido"
-            });
+        // public Cadeteria()
+        // {
+        //     pedidos = new List<Pedido>();
+        //     cadetes = new List<Cadete>();
+        //     nombre = "Cadeteria la prueba";
+        //     pedidos.Add(new Pedido
+        //     {
+        //         Numero = 1,
+        //         Observacion = " Es el primer pedido"
+        //     });
+        //     pedidos.Add(new Pedido
+        //     {
+        //         Numero = 2,
+        //         Observacion = " Es el segundo pedido"
+        //     });
+        //     pedidos.Add(new Pedido
+        //     {
+        //         Numero = 3,
+        //         Observacion = " Es el tercer pedido"
+        //     });
 
-            cadetes.Add(new Cadete
-            {
-                Id = 1,
-                Nombre = "cadete 1",
-            });
-            cadetes.Add(new Cadete
-            {
-                Id = 2,
-                Nombre = "cadete 2",
-            });
-        }
+        //     cadetes.Add(new Cadete
+        //     {
+        //         Id = 1,
+        //         Nombre = "cadete 1",
+        //     });
+        //     cadetes.Add(new Cadete
+        //     {
+        //         Id = 2,
+        //         Nombre = "cadete 2",
+        //     });
+        // }
 
         // // Metodos
-        private Pedido BuscarPedido(int idPedido){
+        public Pedido BuscarPedido(int idPedido){
             Pedido buscado = pedidos.FirstOrDefault(p => p.Numero == idPedido);
             return buscado;
         }
-        private Cadete BuscarCadete(int idCadete){
+        public Cadete BuscarCadete(int idCadete){
             Cadete buscado = cadetes.FirstOrDefault(c => c.Id == idCadete);
             return buscado;
         }
@@ -94,7 +98,7 @@ namespace EspacioCadeteria
             pedidoNuevo.AgregarCadete(cadete);
             return pedidoNuevo;
         }
-        private Pedido CambiarEstadoDePedido(int numPed, Estado nuevoEst){
+        public Pedido CambiarEstadoDePedido(int numPed, Estado nuevoEst){
             Pedido buscado = BuscarPedido(numPed);
             buscado.CambiarEstado(nuevoEst);
             return buscado;
@@ -113,8 +117,6 @@ namespace EspacioCadeteria
             float monto = EnviosEntregadosPorCadete(idCadete) * 500;
             return monto;
         }
-
-
         public List<Pedido> DevolverPedidos(){
             return pedidos;
         }
@@ -123,9 +125,13 @@ namespace EspacioCadeteria
         }
         public Pedido AgregarPedido(Pedido pedido){
             pedidos.Add(pedido);
-            pedido.Numero = pedidos.Count;
+            pedido.AumentarNumero(pedidos.Count());
             return pedido;
         }
-
+        public Cadete AgregarCadete(Cadete cadete){
+            cadetes.Add(cadete);
+            cadete.AumentarNumero(cadetes.Count());
+            return cadete;
+        }
     }
 }
