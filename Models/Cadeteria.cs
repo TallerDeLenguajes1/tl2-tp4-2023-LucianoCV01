@@ -10,6 +10,8 @@ namespace EspacioCadeteria
         string? telefono;
         List<Pedido>? pedidos;
         List<Cadete>? cadetes;
+        AccesoADatosCadetes? accesoCadetes;
+        AccesoADatosPedidos? accesoPedidos;
         // Constructores
         public Cadeteria(string nombre, string telefono, List<Cadete> cadetes)
         {
@@ -25,13 +27,16 @@ namespace EspacioCadeteria
         // Singleton
         private static Cadeteria cadeteria;
 
-
         public static Cadeteria GetCadeteria()
         {
             if (cadeteria == null)
             {
-                AccesoJSON accesoADatos = new();
-                cadeteria = accesoADatos.LeerArchivoCadeteria("/Users/lucianocosentino/Documents/Repositorios/TallerII/tl2-tp4-2023-LucianoCV01/Cadeteria.json", "/Users/lucianocosentino/Documents/Repositorios/TallerII/tl2-tp4-2023-LucianoCV01/Cadetes.json");
+                AccesoADatosCadeteria accesoCadeteria = new();
+                cadeteria = accesoCadeteria.Obtener();
+                cadeteria.accesoCadetes = new();
+                cadeteria.cadetes = cadeteria.accesoCadetes.Obtener();
+                cadeteria.accesoPedidos = new();
+                cadeteria.pedidos = cadeteria.accesoPedidos.Obtener();
             }
             return cadeteria;
         }
@@ -58,6 +63,7 @@ namespace EspacioCadeteria
         {
             Pedido buscado = BuscarPedido(idPedido);
             buscado.Cadete = idCadete;
+            accesoPedidos.Guardar(pedidos);
             return buscado;
         }
         // public Pedido DarAltaPedido(int numPed, string obsPed, Estado estPed, string nomCli, string direcCli, string telCli, string datosRefCli, Cadete cadete)
@@ -70,12 +76,14 @@ namespace EspacioCadeteria
         {
             Pedido buscado = BuscarPedido(numPed);
             buscado.CambiarEstado(nuevoEst);
+            accesoPedidos.Guardar(pedidos);
             return buscado;
         }
         public Pedido ReasignarPedido(int numPedido, int idCadeteNuevo)
         {
             Pedido buscado = BuscarPedido(numPedido);
             buscado.Cadete = idCadeteNuevo;
+            accesoPedidos.Guardar(pedidos);
             return buscado;
         }
         public int EnviosEntregadosPorCadete(int idCadete)
@@ -101,6 +109,7 @@ namespace EspacioCadeteria
         {
             pedido.Numero = pedidos.Count();
             pedidos.Add(pedido);
+            accesoPedidos.Guardar(pedidos);
             return pedido;
         }
         public Cadete AgregarCadete(Cadete cadete)
